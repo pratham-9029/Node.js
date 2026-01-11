@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+    <header class=" backdrop-blur ">
+        <div class="container mx-auto px-4">
+            <div class="flex  px-4">
+                <div id="navbar" class="flex items-center justify-between py-4 w-full">
+                    <a href="/">
+                        <img id="logo" src="./assets/logo-dark.svg" alt="Logo" class="h-9 md:h-9.5 w-auto shrink-0">
+                    </a>
+
+                    <div class="hidden items-center md:gap-8 lg:gap-12 md:flex lg:pl-20">
+                        <a href="/" class=" hover:scale-120 duration-300">Home</a>
+                        <a href="/feature" class=" hover:scale-120 duration-300">Features</a>
+                        <a href="/pricing" class=" hover:scale-120 duration-300">Pricing</a>
+                        <a href="/docs" class=" hover:scale-120 duration-300">Docs</a>
+                    </div>
+
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <button
+                            class="hidden md:block hover:bg-slate-100 transition px-4 py-2 border border-purple-600 rounded-md">
+                            Sign in
+                        </button>
+                        <button
+                            class="hidden md:block px-4 py-2 bg-purple-600 hover:bg-purple-700 transition text-white rounded-md">
+                            Get started
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col flex-wrap h-screen justify-center items-center">
+                <div class="inline-block">
+                    <div
+                        class="flex flex-wrap items-center justify-center gap-3 p-1.5 pr-4  rounded-full border border-slate-300 bg-white/70">
+                        <div class="flex items-center -space-x-3">
+                            <img class="size-7 rounded-full" height="{50}" width="{50}"
+                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&amp;w=50"
+                                alt="userImage1">
+                            <img class="size-7 rounded-full" height="{50}" width="{50}"
+                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&amp;w=50"
+                                alt="userImage2">
+                            <img class="size-7 rounded-full" height="{50}" width="{50}"
+                                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&amp;w=50&amp;h=50&amp;auto=format&amp;fit=crop"
+                                alt="userImage3">
+                        </div>
+                        <p class="text-xs">Join community of 1m+ founders </p>
+                    </div>
+                </div>
+                <h1 class="mt-2 text-5xl/15 md:text-[64px]/19 font-semibold max-w-2xl text-center">
+                    Every startup begins with
+                    <span
+                        class="bg-gradient-to-r from-[#923FEF] to-[#C35DE8] bg-clip-text text-transparent">spark</span>
+                </h1>
+                <p class="text-base text-center max-w-lg mt-2">
+                    Our latest thoughts, trends, and tools, written to help you learn, build, and grow faster.
+                </p>
+                <div class="flex items-center gap-4 mt-8">
+                    <button
+                        class="bg-purple-600 hover:bg-purple-700 transition duration-200 text-white rounded-md px-6 h-11">
+                        Get started
+                    </button>
+                    <button
+                        class="flex items-center gap-2 border border-purple-900 transition text-slate-600 rounded-md px-6 h-11">
+                        <span>Watch demo</span>
+                    </button>
+                </div>
+                <h3 class="text-base text-center text-slate-400 mt-28 pb-14 font-medium">
+                    Trusting by leading brands, including —
+                </h3>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
