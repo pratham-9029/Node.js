@@ -20,17 +20,38 @@
                 <form method="post" action="/create">
                     <h2>Todo</h2>
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" name="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <label for="exampleInputText" class="form-label">Content</label>
+                        <input type="text" name="text" class="form-control" id="exampleInputText"
+                            placeholder="Enter content">
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary mb-3">Submit</button>
                 </form>
             </div>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-md-6">
-                
+                <table class="table table-bordered table-striped ">
+                    <thead>
+                        <tr>
+                            <th>Sr No.</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach((usr,index)=>{ %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= usr.text %></td>
+                                <td>
+                                    <a href="/delete/usr?id=<%= usr.id %>" class="btn btn-danger ">Delete</a>
+                                    <a href="/edit/usr?id=<%= usr.id %>" class="btn btn-warning ">Edit</a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
