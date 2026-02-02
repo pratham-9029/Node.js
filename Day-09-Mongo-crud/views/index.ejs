@@ -16,18 +16,28 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <form method="post" action="">
+                <h1>Welcome to MongoDB CRUD Application</h1>
+                <p>Database connection status should appear in console</p>
+
+                <form method="post" action="/users">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" name="email" class="form-control" id="email" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" name="age" class="form-control" id="age" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add User</button>
                 </form>
+                
+                <hr>
+                <a href="/db-status" class="btn btn-info">Check DB Status</a>
+                <a href="/users" class="btn btn-secondary">View All Users</a>
             </div>
         </div>
     </div>

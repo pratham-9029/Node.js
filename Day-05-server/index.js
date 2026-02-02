@@ -1,7 +1,7 @@
 const http = require("http");
 const fs = require('fs');
 
-const PORT = 5173;
+const PORT = 5174;
 
 const handleRequest = (req, res) => {
 
