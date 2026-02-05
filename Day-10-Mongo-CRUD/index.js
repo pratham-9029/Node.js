@@ -11,7 +11,7 @@ const app = express();
 const port = env.PORT || 3000;
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('uploads/', express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 
 app.get('/add-user', (req, res) => {
@@ -20,10 +20,8 @@ app.get('/add-user', (req, res) => {
 
 app.post('/add-user', imageUpload, (req, res) => {
 
-    // console.log(req.file);
     if (req.file) {
-        // console.log(req.file.filename);
-        req.body.image = req.file.filename;
+        req.body.image = req.file.path;
     }
     userModel.create(req.body)
         .then(() => {
@@ -36,9 +34,8 @@ app.post('/add-user', imageUpload, (req, res) => {
 })
 
 app.get('/view-users', (req, res) => {
-    userModel.find({})
+    userModel.find()
         .then((data) => {
-            // console.log(data);
             return res.render('pages/view.ejs', { data });
         }).catch((err) => {
             console.log(err);
@@ -46,18 +43,11 @@ app.get('/view-users', (req, res) => {
 })
 
 app.get('/delete/usr/:id', (req, res) => {
-    console.log(req.params.id);
     const dltUser = req.params.id;
 
     userModel.findByIdAndDelete(dltUser)
-        .then((deletedUser) => {
-            console.log(`${dltUser} id user deleted`);
-
-            // Delete image if it exists
-            if (deletedUser && deletedUser.image) {
-                fs.unlinkSync('./uploads/' + deletedUser.image);
-            }
-
+        .then((data) => {
+            fs.unlinkSync(data.image);
             return res.redirect(req.get('Referrer') || '/');
         }).catch((err) => {
             console.log(err);
