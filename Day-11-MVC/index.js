@@ -1,9 +1,14 @@
 import express from "express";
-import { envConfig } from "./configs/dotenv.js";
-import database from "./configs/database.js";
+import router from "./routers/index.js";
+import bodyParser from "body-parser";
 
 const app = express();
-const PORT = envConfig.PORT || 3000;
+const PORT = 3000;
+
+app.set('view engine', 'ejs');
+app.use(router);
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.listen(PORT, (err) => {
     if (err) {
