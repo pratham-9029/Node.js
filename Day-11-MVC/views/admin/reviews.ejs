@@ -1,0 +1,94 @@
+<%- include('../partials/admin-header') %>
+
+    <div class="admin-header">
+        <h1>📝 Moderate Reviews</h1>
+    </div>
+
+    <div class="filter-bar">
+        <form action="/admin/reviews" method="GET" style="display:flex; gap:0.8rem; flex:1;">
+            <select name="status" class="form-select">
+                <option value="">All Status</option>
+                <option value="approved" <%=filters.status==='approved' ?'selected':'' %>>Approved</option>
+                <option value="pending" <%=filters.status==='pending' ?'selected':'' %>>Pending</option>
+                <option value="rejected" <%=filters.status==='rejected' ?'selected':'' %>>Rejected</option>
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            <a href="/admin/reviews" class="btn btn-ghost btn-sm">Clear</a>
+        </form>
+    </div>
+
+    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">
+        <%= pagination.total %> reviews
+    </p>
+
+    <% if (reviews.length> 0) { %>
+        <% reviews.forEach(r=> { %>
+            <div class="review-card">
+                <div
+                    style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+                    <div style="flex:1; min-width:0;">
+                        <div class="review-header">
+                            <div class="review-avatar" style="width:35px; height:35px; font-size:0.8rem;">
+                                <%= r.user?.username?.charAt(0)?.toUpperCase() || '?' %>
+                            </div>
+                            <div>
+                                <div class="username">
+                                    <%= r.user?.username || 'Deleted User' %>
+                                </div>
+                                <div class="date">
+                                    <%= r.user?.email || '' %> · <%= new Date(r.createdAt).toLocaleDateString() %>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:0.5rem;">
+                            <span style="font-size:0.85rem; font-weight:600;">Movie: </span>
+                            <span style="font-size:0.85rem; color:var(--accent-light);">
+                                <%= r.movie?.title || 'Deleted Movie' %>
+                            </span>
+                        </div>
+                        <h4 style="margin-bottom:0.3rem;">
+                            <%= r.title %>
+                        </h4>
+                        <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6;">
+                            <%= r.content.substring(0, 200) %>
+                                <%= r.content.length> 200 ? '...' : '' %>
+                        </p>
+                        <div
+                            style="margin-top:0.5rem; display:flex; gap:0.8rem; font-size:0.78rem; color:var(--text-muted);">
+                            <span>⭐ Overall: <%= r.ratings.overall %></span>
+                            <span>🎬 Direction: <%= r.ratings.direction %></span>
+                            <span>🎭 Acting: <%= r.ratings.acting %></span>
+                            <span>❤️ <%= r.likes?.length || 0 %> likes</span>
+                            <% if (r.spoiler) { %><span class="status-badge status-dropped">Spoiler</span>
+                                <% } %>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:0.3rem; flex-direction:column;">
+                        <span
+                            class="status-badge status-<%= r.status === 'approved' ? 'completed' : r.status === 'pending' ? 'watching' : 'dropped' %>"
+                            style="text-align:center;">
+                            <%= r.status %>
+                        </span>
+                        <form action="/admin/reviews/status/<%= r._id %>" method="POST"
+                            style="display:flex; gap:0.3rem; flex-direction:column; margin-top:0.5rem;">
+                            <% if (r.status !=='approved' ) { %>
+                                <button type="submit" name="status" value="approved" class="btn btn-success btn-sm">✅
+                                    Approve</button>
+                                <% } %>
+                                    <% if (r.status !=='rejected' ) { %>
+                                        <button type="submit" name="status" value="rejected"
+                                            class="btn btn-danger btn-sm">❌ Reject</button>
+                                        <% } %>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="icon">📝</div>
+                        <h3>No reviews found</h3>
+                    </div>
+                    <% } %>
+
+                        <%- include('../partials/admin-footer') %>

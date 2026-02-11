@@ -1,0 +1,126 @@
+<%- include('../partials/admin-header') %>
+
+    <div class="admin-header">
+        <h1>🎬 Manage Movies</h1>
+        <a href="/admin/movies/add" class="btn btn-primary">➕ Add Movie</a>
+    </div>
+
+    <div class="filter-bar">
+        <form action="/admin/movies" method="GET"
+            style="display:flex; gap:0.8rem; flex-wrap:wrap; flex:1; align-items:center;">
+            <input type="text" name="search" class="form-input search-input" placeholder="Search movies..."
+                value="<%= filters.search %>">
+            <select name="status" class="form-select">
+                <option value="">All Status</option>
+                <option value="published" <%=filters.status==='published' ?'selected':'' %>>Published</option>
+                <option value="draft" <%=filters.status==='draft' ?'selected':'' %>>Draft</option>
+                <option value="archived" <%=filters.status==='archived' ?'selected':'' %>>Archived</option>
+            </select>
+            <select name="genre" class="form-select">
+                <option value="">All Genres</option>
+                <%
+                    ["Action","Adventure","Animation","Comedy","Crime","Documentary","Drama","Fantasy","Horror","Mystery","Romance","Sci-Fi","Thriller"].forEach(g=>
+                    { %>
+                    <option value="<%= g %>" <%=filters.genre===g?'selected':'' %>><%= g %>
+                    </option>
+                    <% }) %>
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+            <a href="/admin/movies" class="btn btn-ghost btn-sm">Clear</a>
+        </form>
+    </div>
+
+    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">
+        <%= pagination.total %> movies found
+    </p>
+
+    <% if (movies.length> 0) { %>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Director</th>
+                    <th>Genre</th>
+                    <th>Era</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% movies.forEach(m=> { %>
+                    <tr>
+                        <td>
+                            <div style="display:flex; gap:0.6rem; align-items:center;">
+                                <div
+                                    style="width:35px; height:50px; border-radius:4px; overflow:hidden; flex-shrink:0; background:var(--bg-secondary);">
+                                    <img src="<%= m.poster || '' %>" alt=""
+                                        style="width:100%; height:100%; object-fit:cover;"
+                                        onerror="this.style.display='none'">
+                                </div>
+                                <div>
+                                    <div style="font-weight:600; font-size:0.85rem;">
+                                        <%= m.title %>
+                                    </div>
+                                    <div style="font-size:0.72rem; color:var(--text-muted);">
+                                        <%= new Date(m.releaseDate).getFullYear() %>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-size:0.85rem;">
+                            <%= m.director %>
+                        </td>
+                        <td>
+                            <% m.genres.slice(0,2).forEach(g=> { %><span class="genre-tag" style="margin:1px">
+                                    <%= g %>
+                                </span>
+                                <% }) %>
+                        </td>
+                        <td style="font-size:0.8rem; color:var(--text-muted);">
+                            <%= m.era ? m.era.split('(')[0].trim() : '-' %>
+                        </td>
+                        <td>
+                            <% if (m.ratings?.overall> 0) { %><span style="color:var(--gold); font-weight:600;">⭐ <%=
+                                        m.ratings.overall.toFixed(1) %></span>
+                                <% } else { %>-<% } %>
+                        </td>
+                        <td><span
+                                class="status-badge status-<%= m.status === 'published' ? 'completed' : m.status === 'draft' ? 'plan_to_watch' : 'dropped' %>">
+                                <%= m.status %>
+                            </span></td>
+                        <td>
+                            <div style="display:flex; gap:0.3rem;">
+                                <a href="/admin/movies/edit/<%= m._id %>" class="btn btn-ghost btn-sm">✏️</a>
+                                <form action="/admin/movies/delete/<%= m._id %>" method="POST" style="display:inline;"
+                                    onsubmit="return confirm('Delete this movie?')">
+                                    <button type="submit" class="btn btn-ghost btn-sm"
+                                        style="color:var(--danger);">🗑️</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+
+        <% if (pagination.totalPages> 1) { %>
+            <div class="pagination">
+                <% for (let i=1; i <=pagination.totalPages; i++) { %>
+                    <a href="/admin/movies?page=<%= i %><%= filters.search ? '&search='+filters.search : '' %><%= filters.status ? '&status='+filters.status : '' %>"
+                        class="page-btn <%= pagination.page === i ? 'active' : '' %>">
+                        <%= i %>
+                    </a>
+                    <% } %>
+            </div>
+            <% } %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <div class="icon">🎬</div>
+                        <h3>No movies found</h3>
+                        <p>Add your first movie or adjust filters.</p>
+                        <a href="/admin/movies/add" class="btn btn-primary">Add Movie</a>
+                    </div>
+                    <% } %>
+
+                        <%- include('../partials/admin-footer') %>

@@ -1,0 +1,116 @@
+<%- include('../partials/admin-header') %>
+
+    <div class="admin-header">
+        <h1>✏️ Edit Movie</h1>
+        <a href="/admin/movies" class="btn btn-ghost">← Back to Movies</a>
+    </div>
+
+    <% if (error) { %>
+        <div class="alert alert-error" style="max-width:800px;">
+            <%= error %>
+        </div>
+        <% } %>
+
+            <form action="/admin/movies/edit/<%= movie._id %>" method="POST" enctype="multipart/form-data"
+                style="max-width:800px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Title *</label>
+                        <input type="text" name="title" class="form-input" required value="<%= movie.title %>">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Director *</label>
+                        <input type="text" name="director" class="form-input" required value="<%= movie.director %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Overview *</label>
+                    <textarea name="overview" class="form-textarea" required rows="3"><%= movie.overview %></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Release Date *</label>
+                        <input type="date" name="releaseDate" class="form-input" required
+                            value="<%= new Date(movie.releaseDate).toISOString().split('T')[0] %>">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Runtime (minutes)</label>
+                        <input type="number" name="runtime" class="form-input" min="1"
+                            value="<%= movie.runtime || '' %>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Genres (comma-separated)</label>
+                        <input type="text" name="genres" class="form-input"
+                            value="<%= (movie.genres || []).join(', ') %>">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mood (comma-separated)</label>
+                        <input type="text" name="mood" class="form-input" value="<%= (movie.mood || []).join(', ') %>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Era *</label>
+                        <select name="era" class="form-select" required>
+                            <% ["Classic (Pre-1970)","Retro (1970-1990)","Modern (1990-2010)","Contemporary
+                                (2010+)"].forEach(e=> { %>
+                                <option value="<%= e %>" <%=movie.era===e ? 'selected' : '' %>><%= e %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Language</label>
+                        <input type="text" name="language" class="form-input"
+                            value="<%= movie.language || 'English' %>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="published" <%=movie.status==='published' ?'selected':'' %>>Published</option>
+                            <option value="draft" <%=movie.status==='draft' ?'selected':'' %>>Draft</option>
+                            <option value="archived" <%=movie.status==='archived' ?'selected':'' %>>Archived</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Featured</label>
+                        <select name="featured" class="form-select">
+                            <option value="false" <%=!movie.featured?'selected':'' %>>No</option>
+                            <option value="true" <%=movie.featured?'selected':'' %>>Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <% if (movie.poster) { %>
+                    <div style="margin-bottom:1rem;">
+                        <label class="form-label">Current Poster</label>
+                        <img src="<%= movie.poster %>" alt="Current poster"
+                            style="height:120px; border-radius:8px; margin-top:0.3rem;"
+                            onerror="this.style.display='none'">
+                    </div>
+                    <% } %>
+                        <div class="form-group">
+                            <label class="form-label">Upload New Poster</label>
+                            <input type="file" name="poster" class="form-input" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Poster URL</label>
+                            <input type="text" name="poster" class="form-input" value="<%= movie.poster || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Backdrop URL</label>
+                            <input type="text" name="backdrop" class="form-input" value="<%= movie.backdrop || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cast (JSON)</label>
+                            <textarea name="cast" class="form-textarea"
+                                rows="2"><%= JSON.stringify(movie.cast || []) %></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1rem;">💾 Save
+                            Changes</button>
+            </form>
+
+            <%- include('../partials/admin-footer') %>

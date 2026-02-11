@@ -1,0 +1,42 @@
+<%- include('../partials/head') %>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="logo">
+                <h1>🎬 CineVerse</h1>
+                <p>Join the community</p>
+            </div>
+            <h2>Create Account</h2>
+            <% if (error) { %>
+                <div class="alert alert-error">
+                    <%= error %>
+                </div>
+                <% } %>
+                    <form action="/auth/register" method="POST">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-input" placeholder="cinephile_username"
+                                required minlength="3" maxlength="30">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-input" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-input" placeholder="••••••••" required
+                                minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" name="confirmPassword" class="form-input" placeholder="••••••••"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"
+                            style="width:100%; justify-content: center; margin-top: 0.5rem;">Create Account</button>
+                    </form>
+                    <p class="auth-link">Already a member? <a href="/auth/login">Sign in</a></p>
+        </div>
+    </div>
+    </body>
+
+    </html>

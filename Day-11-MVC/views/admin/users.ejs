@@ -1,0 +1,80 @@
+<%- include('../partials/admin-header') %>
+
+    <div class="admin-header">
+        <h1>👥 Manage Users</h1>
+    </div>
+
+    <div class="filter-bar">
+        <form action="/admin/users" method="GET" style="display:flex; gap:0.8rem; flex:1;">
+            <input type="text" name="search" class="form-input search-input" placeholder="Search users..."
+                value="<%= filters.search %>">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            <a href="/admin/users" class="btn btn-ghost btn-sm">Clear</a>
+        </form>
+    </div>
+
+    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">
+        <%= pagination.total %> users
+    </p>
+
+    <% if (users.length> 0) { %>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Reviews</th>
+                    <th>Watchlist</th>
+                    <th>Joined</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(u=> { %>
+                    <tr>
+                        <td>
+                            <div style="display:flex; gap:0.6rem; align-items:center;">
+                                <div class="review-avatar" style="width:32px; height:32px; font-size:0.8rem;">
+                                    <%= u.username.charAt(0).toUpperCase() %>
+                                </div>
+                                <span style="font-weight:600; font-size:0.85rem;">
+                                    <%= u.username %>
+                                </span>
+                            </div>
+                        </td>
+                        <td style="font-size:0.85rem;">
+                            <%= u.email %>
+                        </td>
+                        <td style="font-size:0.85rem;">
+                            <%= u.reviewCount %>
+                        </td>
+                        <td style="font-size:0.85rem;">
+                            <%= u.watchlistCount %>
+                        </td>
+                        <td style="font-size:0.8rem; color:var(--text-muted);">
+                            <%= new Date(u.createdAt).toLocaleDateString() %>
+                        </td>
+                        <td><span class="status-badge <%= u.isActive ? 'status-completed' : 'status-dropped' %>">
+                                <%= u.isActive ? 'Active' : 'Inactive' %>
+                            </span></td>
+                        <td>
+                            <form action="/admin/users/toggle/<%= u._id %>" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-sm <%= u.isActive ? 'btn-ghost' : 'btn-success' %>"
+                                    style="font-size:0.75rem;">
+                                    <%= u.isActive ? '🚫 Deactivate' : '✅ Activate' %>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+        <% } else { %>
+            <div class="empty-state">
+                <div class="icon">👥</div>
+                <h3>No users found</h3>
+            </div>
+            <% } %>
+
+                <%- include('../partials/admin-footer') %>

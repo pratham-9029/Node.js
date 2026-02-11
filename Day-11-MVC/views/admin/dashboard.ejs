@@ -1,0 +1,169 @@
+<%- include('../partials/admin-header') %>
+
+    <div class="admin-header">
+        <h1>📊 Dashboard</h1>
+        <span style="color:var(--text-muted); font-size:0.85rem;">Welcome back, <%= currentUser.username %></span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🎬</div>
+            <div class="stat-value">
+                <%= stats.totalMovies %>
+            </div>
+            <div class="stat-label">Total Movies</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">
+                <%= stats.totalUsers %>
+            </div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-value">
+                <%= stats.totalReviews %>
+            </div>
+            <div class="stat-label">Total Reviews</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value">
+                <%= stats.publishedMovies %>
+            </div>
+            <div class="stat-label">Published</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-value">
+                <%= stats.draftMovies %>
+            </div>
+            <div class="stat-label">Drafts</div>
+        </div>
+    </div>
+
+    <!-- Genre Distribution -->
+    <% if (genreStats.length> 0) { %>
+        <div style="margin-bottom:2rem;">
+            <h2 class="section-title" style="margin-bottom:1rem;">🎭 Genre Distribution</h2>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+                <% genreStats.forEach(g=> { %>
+                    <div
+                        style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:0.8rem 1.2rem; text-align:center; min-width:100px;">
+                        <div style="font-weight:700; font-size:1.2rem; color:var(--accent-light);">
+                            <%= g.count %>
+                        </div>
+                        <div style="font-size:0.78rem; color:var(--text-muted);">
+                            <%= g._id %>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+        <% } %>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+                <!-- Recent Movies -->
+                <div>
+                    <div class="section-header">
+                        <h2 class="section-title" style="font-size:1.1rem;">🆕 Recent Movies</h2>
+                        <a href="/admin/movies" class="btn btn-ghost btn-sm">View All</a>
+                    </div>
+                    <% if (recentMovies.length> 0) { %>
+                        <% recentMovies.forEach(m=> { %>
+                            <div
+                                style="display:flex; gap:0.8rem; padding:0.6rem 0; border-bottom:1px solid var(--border); align-items:center;">
+                                <div
+                                    style="width:40px; height:55px; border-radius:4px; overflow:hidden; flex-shrink:0; background:var(--bg-secondary);">
+                                    <img src="<%= m.poster || '' %>" alt=""
+                                        style="width:100%; height:100%; object-fit:cover;"
+                                        onerror="this.style.display='none'">
+                                </div>
+                                <div style="flex:1; min-width:0;">
+                                    <div
+                                        style="font-size:0.85rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                        <%= m.title %>
+                                    </div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">
+                                        <%= m.director %> · <%= m.status %>
+                                    </div>
+                                </div>
+                                <a href="/admin/movies/edit/<%= m._id %>" class="btn btn-ghost btn-sm">Edit</a>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <p style="color:var(--text-muted); font-size:0.85rem; padding:1rem 0;">No movies yet
+                                    </p>
+                                    <% } %>
+                </div>
+
+                <!-- Recent Users -->
+                <div>
+                    <div class="section-header">
+                        <h2 class="section-title" style="font-size:1.1rem;">👤 Recent Users</h2>
+                        <a href="/admin/users" class="btn btn-ghost btn-sm">View All</a>
+                    </div>
+                    <% if (recentUsers.length> 0) { %>
+                        <% recentUsers.forEach(u=> { %>
+                            <div
+                                style="display:flex; gap:0.8rem; padding:0.6rem 0; border-bottom:1px solid var(--border); align-items:center;">
+                                <div class="review-avatar"
+                                    style="width:35px; height:35px; font-size:0.85rem; flex-shrink:0;">
+                                    <%= u.username.charAt(0).toUpperCase() %>
+                                </div>
+                                <div style="flex:1;">
+                                    <div style="font-size:0.85rem; font-weight:600;">
+                                        <%= u.username %>
+                                    </div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">
+                                        <%= u.email %>
+                                    </div>
+                                </div>
+                                <span class="status-badge <%= u.isActive ? 'status-completed' : 'status-dropped' %>"
+                                    style="font-size:0.65rem;">
+                                    <%= u.isActive ? 'Active' : 'Inactive' %>
+                                </span>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <p style="color:var(--text-muted); font-size:0.85rem; padding:1rem 0;">No users yet
+                                    </p>
+                                    <% } %>
+                </div>
+            </div>
+
+            <!-- Recent Reviews -->
+            <% if (recentReviews.length> 0) { %>
+                <div style="margin-top:2rem;">
+                    <div class="section-header">
+                        <h2 class="section-title" style="font-size:1.1rem;">📝 Recent Reviews</h2>
+                        <a href="/admin/reviews" class="btn btn-ghost btn-sm">View All</a>
+                    </div>
+                    <% recentReviews.forEach(r=> { %>
+                        <div
+                            style="display:flex; gap:0.8rem; padding:0.7rem 0; border-bottom:1px solid var(--border); align-items:center;">
+                            <div class="review-avatar"
+                                style="width:32px; height:32px; font-size:0.75rem; flex-shrink:0;">
+                                <%= r.user?.username?.charAt(0)?.toUpperCase() || '?' %>
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div style="font-size:0.85rem;"><strong>
+                                        <%= r.user?.username %>
+                                    </strong> reviewed <strong>
+                                        <%= r.movie?.title %>
+                                    </strong></div>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">
+                                    <%= r.title %> · ⭐ <%= r.ratings.overall %>
+                                </div>
+                            </div>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">
+                                <%= new Date(r.createdAt).toLocaleDateString() %>
+                            </span>
+                        </div>
+                        <% }) %>
+                </div>
+                <% } %>
+
+                    <%- include('../partials/admin-footer') %>

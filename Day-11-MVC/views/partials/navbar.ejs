@@ -1,0 +1,29 @@
+<nav class="navbar">
+    <a href="/" class="logo">🎬 CineVerse</a>
+    <ul class="nav-links">
+        <li><a href="/"
+                class="<%= typeof title !== 'undefined' && title.includes('Discover Your') ? 'active' : '' %>">Home</a>
+        </li>
+        <li><a href="/discover"
+                class="<%= typeof title !== 'undefined' && title.includes('Discover Movies') ? 'active' : '' %>">Discover</a>
+        </li>
+        <% if (isAuthenticated) { %>
+            <li><a href="/watchlist"
+                    class="<%= typeof title !== 'undefined' && title.includes('Watchlist') ? 'active' : '' %>">Watchlist</a>
+            </li>
+            <% } %>
+    </ul>
+    <div class="nav-actions">
+        <% if (isAuthenticated) { %>
+            <% if (isAdmin) { %>
+                <a href="/admin" class="btn btn-ghost btn-sm">⚙️ Admin</a>
+                <% } %>
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;">👤 <%= currentUser.username %>
+                            </span>
+                    <a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a>
+                    <% } else { %>
+                        <a href="/auth/login" class="btn btn-ghost btn-sm">Login</a>
+                        <a href="/auth/register" class="btn btn-primary btn-sm">Sign Up</a>
+                        <% } %>
+    </div>
+</nav>

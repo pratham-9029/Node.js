@@ -1,0 +1,110 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>Discover Your Next <span>Favorite Movie</span></h1>
+                <p>Explore thousands of films, build your watchlist, and share your cinematic journey with a passionate
+                    community.</p>
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                    <a href="/discover" class="btn btn-primary btn-lg">🔍 Explore Movies</a>
+                    <% if (!isAuthenticated) { %>
+                        <a href="/auth/register" class="btn btn-outline btn-lg">Join CineVerse</a>
+                        <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Movies -->
+        <% if (featuredMovies.length> 0) { %>
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">✨ Featured</h2>
+                        <a href="/discover" class="btn btn-ghost btn-sm">View All →</a>
+                    </div>
+                    <div class="featured-scroll">
+                        <% featuredMovies.forEach(movie=> { %>
+                            <a href="/movie/<%= movie.slug %>" class="featured-card">
+                                <img src="<%= movie.backdrop || movie.poster || '' %>" alt="<%= movie.title %>"
+                                    onerror="this.src='https://via.placeholder.com/640x360/1a1a2e/7c3aed?text=CineVerse'">
+                                <div class="featured-info">
+                                    <h3>
+                                        <%= movie.title %>
+                                    </h3>
+                                    <p>
+                                        <%= movie.director %> · <%= new Date(movie.releaseDate).getFullYear() %> ·
+                                                <% movie.genres.slice(0,2).forEach(g=> { %><span class="genre-tag"
+                                                        style="margin-right:4px">
+                                                        <%= g %>
+                                                    </span>
+                                                    <% }) %>
+                                    </p>
+                                </div>
+                            </a>
+                            <% }) %>
+                    </div>
+                </div>
+            </section>
+            <% } %>
+
+                <!-- Latest Movies -->
+                <section class="section">
+                    <div class="container">
+                        <div class="section-header">
+                            <h2 class="section-title">🆕 Recently Added</h2>
+                            <a href="/discover?sort=latest" class="btn btn-ghost btn-sm">See All →</a>
+                        </div>
+                        <% if (latestMovies.length> 0) { %>
+                            <div class="movie-grid">
+                                <% latestMovies.forEach(movie=> { %>
+                                    <%- include('../partials/movie-card', { movie }) %>
+                                        <% }) %>
+                            </div>
+                            <% } else { %>
+                                <div class="empty-state">
+                                    <div class="icon">🎬</div>
+                                    <h3>No movies yet</h3>
+                                    <p>Check back soon for exciting new additions!</p>
+                                </div>
+                                <% } %>
+                    </div>
+                </section>
+
+                <!-- Top Rated -->
+                <% if (topRated.length> 0) { %>
+                    <section class="section">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">⭐ Top Rated</h2>
+                                <a href="/discover?sort=rating" class="btn btn-ghost btn-sm">View All →</a>
+                            </div>
+                            <div class="movie-grid">
+                                <% topRated.forEach(movie=> { %>
+                                    <%- include('../partials/movie-card', { movie }) %>
+                                        <% }) %>
+                            </div>
+                        </div>
+                    </section>
+                    <% } %>
+
+                        <!-- Browse by Genre -->
+                        <% if (genreCounts.length> 0) { %>
+                            <section class="section">
+                                <div class="container">
+                                    <h2 class="section-title" style="margin-bottom:1.2rem">🎭 Browse by Genre</h2>
+                                    <div class="filter-chips" style="gap:0.6rem">
+                                        <% genreCounts.forEach(g=> { %>
+                                            <a href="/discover?genre=<%= g._id %>" class="filter-chip"
+                                                style="font-size:0.85rem; padding:0.4rem 1rem;">
+                                                <%= g._id %> <span style="opacity:0.6; margin-left:4px">(<%= g.count %>
+                                                            )</span>
+                                            </a>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                            </section>
+                            <% } %>
+
+                                <%- include('../partials/footer') %>

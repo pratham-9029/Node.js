@@ -1,0 +1,92 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+        <div class="container section">
+            <h1 class="section-title" style="font-size:1.8rem; margin-bottom:0.5rem;">📋 My Watchlist</h1>
+            <p style="color:var(--text-muted); margin-bottom:2rem;">Track your cinematic journey</p>
+
+            <!-- Status Tabs -->
+            <div class="watchlist-tabs">
+                <a href="/watchlist" class="watchlist-tab <%= !currentStatus ? 'active' : '' %>">All <span
+                        class="count">(<%= counts.all %>)</span></a>
+                <a href="/watchlist?status=plan_to_watch"
+                    class="watchlist-tab <%= currentStatus==='plan_to_watch' ? 'active' : '' %>">📌 Plan to Watch <span
+                        class="count">(<%= counts.plan_to_watch %>)</span></a>
+                <a href="/watchlist?status=watching"
+                    class="watchlist-tab <%= currentStatus==='watching' ? 'active' : '' %>">▶️ Watching <span
+                        class="count">(<%= counts.watching %>)</span></a>
+                <a href="/watchlist?status=completed"
+                    class="watchlist-tab <%= currentStatus==='completed' ? 'active' : '' %>">✅ Completed <span
+                        class="count">(<%= counts.completed %>)</span></a>
+                <a href="/watchlist?status=on_hold"
+                    class="watchlist-tab <%= currentStatus==='on_hold' ? 'active' : '' %>">⏸️ On Hold <span
+                        class="count">(<%= counts.on_hold %>)</span></a>
+                <a href="/watchlist?status=dropped"
+                    class="watchlist-tab <%= currentStatus==='dropped' ? 'active' : '' %>">❌ Dropped <span
+                        class="count">(<%= counts.dropped %>)</span></a>
+            </div>
+
+            <% if (watchlist.length> 0) { %>
+                <% watchlist.forEach(entry=> { %>
+                    <div class="watchlist-item" id="wl-<%= entry._id %>">
+                        <div class="wl-poster">
+                            <a href="/movie/<%= entry.movie?.slug %>">
+                                <img src="<%= entry.movie?.poster || '' %>" alt="<%= entry.movie?.title %>"
+                                    onerror="this.src='https://via.placeholder.com/60x90/1a1a2e/7c3aed?text=N/A'">
+                            </a>
+                        </div>
+                        <div class="wl-info">
+                            <h4><a href="/movie/<%= entry.movie?.slug %>" style="color:var(--text-primary)">
+                                    <%= entry.movie?.title %>
+                                </a></h4>
+                            <div class="meta">
+                                <span>
+                                    <%= entry.movie?.director %>
+                                </span> ·
+                                <span>
+                                    <%= new Date(entry.movie?.releaseDate).getFullYear() %>
+                                </span>
+                                <% if (entry.movie?.runtime) { %> · <span>
+                                        <%= entry.movie.runtime %> min
+                                    </span>
+                                    <% } %>
+                            </div>
+                            <div
+                                style="margin-top:0.4rem; display:flex; gap:0.3rem; align-items:center; flex-wrap:wrap;">
+                                <span class="status-badge status-<%= entry.status %>">
+                                    <%= entry.status.replace(/_/g, ' ' ) %>
+                                </span>
+                                <% if (entry.movie?.ratings?.overall> 0) { %>
+                                    <span style="font-size:0.78rem; color:var(--gold);">⭐ <%=
+                                            entry.movie.ratings.overall.toFixed(1) %></span>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <div class="wl-actions">
+                            <select class="form-select" style="width:auto; padding:0.3rem 0.6rem; font-size:0.78rem;"
+                                onchange="updateWatchlistStatus('<%= entry._id %>', this.value)">
+                                <option value="plan_to_watch" <%=entry.status==='plan_to_watch' ?'selected':'' %>>Plan
+                                    to Watch</option>
+                                <option value="watching" <%=entry.status==='watching' ?'selected':'' %>>Watching
+                                </option>
+                                <option value="completed" <%=entry.status==='completed' ?'selected':'' %>>Completed
+                                </option>
+                                <option value="on_hold" <%=entry.status==='on_hold' ?'selected':'' %>>On Hold</option>
+                                <option value="dropped" <%=entry.status==='dropped' ?'selected':'' %>>Dropped</option>
+                            </select>
+                            <button class="btn btn-ghost btn-sm btn-icon"
+                                onclick="removeFromWatchlist('<%= entry._id %>')" title="Remove">🗑️</button>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% } else { %>
+                            <div class="empty-state">
+                                <div class="icon">📋</div>
+                                <h3>Your watchlist is empty</h3>
+                                <p>Start exploring and add movies to your watchlist!</p>
+                                <a href="/discover" class="btn btn-primary">Discover Movies</a>
+                            </div>
+                            <% } %>
+        </div>
+
+        <%- include('../partials/footer') %>

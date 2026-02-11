@@ -1,0 +1,33 @@
+<a href="/movie/<%= movie.slug %>" class="movie-card" id="movie-<%= movie._id %>">
+    <div class="poster">
+        <img src="<%= movie.poster || '' %>" alt="<%= movie.title %>" loading="lazy"
+            onerror="this.src='https://via.placeholder.com/300x450/1a1a2e/7c3aed?text=No+Poster'">
+        <% if (movie.ratings && movie.ratings.overall> 0) { %>
+            <div class="rating-badge">⭐ <%= movie.ratings.overall.toFixed(1) %>
+            </div>
+            <% } %>
+                <div class="overlay">
+                    <span class="btn btn-primary btn-sm" style="width:100%; justify-content:center;">View Details</span>
+                </div>
+    </div>
+    <div class="card-info">
+        <h3>
+            <%= movie.title %>
+        </h3>
+        <div class="meta">
+            <span>
+                <%= new Date(movie.releaseDate).getFullYear() %>
+            </span>
+            <% if (movie.runtime) { %>
+                <span>· <%= Math.floor(movie.runtime/60) %>h <%= movie.runtime%60 %>m</span>
+                <% } %>
+        </div>
+        <div style="margin-top:0.4rem; display:flex; gap:0.3rem; flex-wrap:wrap;">
+            <% (movie.genres || []).slice(0,2).forEach(g=> { %>
+                <span class="genre-tag">
+                    <%= g %>
+                </span>
+                <% }) %>
+        </div>
+    </div>
+</a>

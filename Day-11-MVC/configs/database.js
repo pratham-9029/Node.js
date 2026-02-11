@@ -4,10 +4,11 @@ import { envConfig } from "./dotenv.js";
 const db = async () => {
     try {
         await mongoose.connect(envConfig.MONGODB_URL);
-        console.log("MongoDB connected");
+        console.log("✅ MongoDB connected successfully");
     } catch (error) {
-        console.log(error);
+        console.error("❌ MongoDB connection error:", error.message);
+        process.exit(1);
     }
 }
 
-export default db();
+export default db;

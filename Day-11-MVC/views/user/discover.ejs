@@ -1,0 +1,147 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+        <div class="container section">
+            <h1 class="section-title" style="font-size:1.8rem; margin-bottom:0.5rem;">🔍 Discover Movies</h1>
+            <p style="color:var(--text-muted); margin-bottom:2rem;">Find your next cinematic adventure</p>
+
+            <div class="discover-layout">
+                <!-- Sidebar Filters -->
+                <aside class="discover-sidebar">
+                    <div class="discover-filters">
+                        <h3>🎛️ Filters</h3>
+
+                        <!-- Search -->
+                        <div class="filter-group">
+                            <label>Search</label>
+                            <form action="/discover" method="GET" id="searchForm">
+                                <input type="text" name="search" class="form-input"
+                                    placeholder="Movie title or director..." value="<%= filters.search || '' %>">
+                                <% if (filters.genre) { %><input type="hidden" name="genre"
+                                        value="<%= filters.genre %>">
+                                    <% } %>
+                                        <% if (filters.era) { %><input type="hidden" name="era"
+                                                value="<%= filters.era %>">
+                                            <% } %>
+                                                <% if (filters.mood) { %><input type="hidden" name="mood"
+                                                        value="<%= filters.mood %>">
+                                                    <% } %>
+                                                        <% if (filters.sort) { %><input type="hidden" name="sort"
+                                                                value="<%= filters.sort %>">
+                                                            <% } %>
+                            </form>
+                        </div>
+
+                        <!-- Genre -->
+                        <div class="filter-group">
+                            <label>Genre</label>
+                            <div class="filter-chips">
+                                <% const
+                                    genres=["Action","Adventure","Animation","Comedy","Crime","Documentary","Drama","Fantasy","Horror","Mystery","Romance","Sci-Fi","Thriller"];
+                                    %>
+                                    <% genres.forEach(g=> { %>
+                                        <a href="/discover?genre=<%= g %><%= filters.sort ? '&sort='+filters.sort : '' %><%= filters.search ? '&search='+filters.search : '' %>"
+                                            class="filter-chip <%= filters.genre === g ? 'active' : '' %>">
+                                            <%= g %>
+                                        </a>
+                                        <% }) %>
+                            </div>
+                        </div>
+
+                        <!-- Era -->
+                        <div class="filter-group">
+                            <label>Era</label>
+                            <div class="filter-chips">
+                                <% const eras=["Classic (Pre-1970)","Retro (1970-1990)","Modern
+                                    (1990-2010)","Contemporary (2010+)"]; %>
+                                    <% eras.forEach(e=> { %>
+                                        <a href="/discover?era=<%= encodeURIComponent(e) %><%= filters.genre ? '&genre='+filters.genre : '' %><%= filters.sort ? '&sort='+filters.sort : '' %>"
+                                            class="filter-chip <%= filters.era === e ? 'active' : '' %>">
+                                            <%= e.split('(')[0].trim() %>
+                                        </a>
+                                        <% }) %>
+                            </div>
+                        </div>
+
+                        <!-- Mood -->
+                        <div class="filter-group">
+                            <label>Mood</label>
+                            <div class="filter-chips">
+                                <% const
+                                    moods=["Feel-Good","Intense","Thought-Provoking","Dark","Romantic","Adventurous","Suspenseful","Mind-Bending","Inspirational"];
+                                    %>
+                                    <% moods.forEach(m=> { %>
+                                        <a href="/discover?mood=<%= m %><%= filters.genre ? '&genre='+filters.genre : '' %><%= filters.sort ? '&sort='+filters.sort : '' %>"
+                                            class="filter-chip <%= filters.mood === m ? 'active' : '' %>">
+                                            <%= m %>
+                                        </a>
+                                        <% }) %>
+                            </div>
+                        </div>
+
+                        <!-- Sort -->
+                        <div class="filter-group">
+                            <label>Sort By</label>
+                            <select class="form-select"
+                                onchange="window.location.href='/discover?sort='+this.value+'<%= filters.genre ? '&genre='+filters.genre : '' %><%= filters.search ? '&search='+filters.search : '' %>'">
+                                <option value="latest" <%=filters.sort==='latest' || !filters.sort ? 'selected' : '' %>
+                                    >Latest</option>
+                                <option value="rating" <%=filters.sort==='rating' ? 'selected' : '' %>>Top Rated
+                                </option>
+                                <option value="title" <%=filters.sort==='title' ? 'selected' : '' %>>A-Z</option>
+                                <option value="popular" <%=filters.sort==='popular' ? 'selected' : '' %>>Most Popular
+                                </option>
+                                <option value="release" <%=filters.sort==='release' ? 'selected' : '' %>>Release Date
+                                </option>
+                            </select>
+                        </div>
+
+                        <a href="/discover" class="btn btn-ghost btn-sm"
+                            style="width:100%; justify-content:center;">Clear Filters</a>
+                    </div>
+                </aside>
+
+                <!-- Movie Results -->
+                <main>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">
+                        <%= pagination.total %> movies found
+                    </p>
+                    <% if (movies.length> 0) { %>
+                        <div class="movie-grid">
+                            <% movies.forEach(movie=> { %>
+                                <%- include('../partials/movie-card', { movie }) %>
+                                    <% }) %>
+                        </div>
+
+                        <!-- Pagination -->
+                        <% if (pagination.totalPages> 1) { %>
+                            <div class="pagination">
+                                <% if (pagination.page> 1) { %>
+                                    <a href="/discover?page=<%= pagination.page - 1 %><%= filters.genre ? '&genre='+filters.genre : '' %><%= filters.sort ? '&sort='+filters.sort : '' %><%= filters.search ? '&search='+filters.search : '' %>"
+                                        class="page-btn">← Prev</a>
+                                    <% } %>
+                                        <% for (let i=1; i <=pagination.totalPages; i++) { %>
+                                            <a href="/discover?page=<%= i %><%= filters.genre ? '&genre='+filters.genre : '' %><%= filters.sort ? '&sort='+filters.sort : '' %><%= filters.search ? '&search='+filters.search : '' %>"
+                                                class="page-btn <%= pagination.page === i ? 'active' : '' %>">
+                                                <%= i %>
+                                            </a>
+                                            <% } %>
+                                                <% if (pagination.page < pagination.totalPages) { %>
+                                                    <a href="/discover?page=<%= pagination.page + 1 %><%= filters.genre ? '&genre='+filters.genre : '' %><%= filters.sort ? '&sort='+filters.sort : '' %><%= filters.search ? '&search='+filters.search : '' %>"
+                                                        class="page-btn">Next →</a>
+                                                    <% } %>
+                            </div>
+                            <% } %>
+                                <% } else { %>
+                                    <div class="empty-state">
+                                        <div class="icon">🔍</div>
+                                        <h3>No movies found</h3>
+                                        <p>Try adjusting your filters or search terms.</p>
+                                        <a href="/discover" class="btn btn-primary">Clear Filters</a>
+                                    </div>
+                                    <% } %>
+                </main>
+            </div>
+        </div>
+
+        <%- include('../partials/footer') %>
