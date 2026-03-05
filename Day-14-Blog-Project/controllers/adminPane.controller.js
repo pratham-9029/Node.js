@@ -1,47 +1,56 @@
 import userModel from "../model/userModel.js";
+import bcrypt from "bcrypt";
 
 const adminPanelController = {
-    adminDashboard(req,res){
+    adminDashboard(req, res) {
         res.render('index');
     },
-    loginPage(req,res){
+    loginPage(req, res) {
         res.render('./pages/login');
     },
 
-    async loginUser(req,res){
-        const {email,password} = req.body;
-        
-        const user = await userModel.findOne({email});
-        if(user){
-            if(user.password == password){
-                res.cookie('id',user.id);
+    async loginUser(req, res) {
+        const { email, password, confirmPassword } = req.body;
+
+        const user = await userModel.findOne({ email });
+        if (user) {
+            if (user.password == password) {
+                res.cookie('id', user.id);
                 return res.redirect('/admin');
-            }else{
+            } else {
                 return res.redirect('/login');
             }
-        }else{
+        } else {
             return res.redirect('/login');
         }
     },
 
-    registerPage(req,res){
+    registerPage(req, res) {
         res.render('./pages/register');
     },
-    async registerUser(req,res){
-        const {username,email,password,confirmPassword} = req.body;
+    async registerUser(req, res) {
+        const { username, email, password, confirmPassword } = req.body;
 
-        
-        if(password == confirmPassword){
-            await userModel.create(req.body);
+
+        if (password == confirmPassword) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await userModel.create({ username, email, password: hashedPassword });
             return res.redirect('/login');
-        }else{
+        } else {
             return res.redirect('/register');
         }
     },
 
-    logoutUser(req,res){
-        res.clearCookie('id');
-        return res.redirect('/login');
+    logoutUser(req, res) {
+        req.logout(function (err) {
+            if (err) { return next(err); }
+            return res.redirect('/login');
+        });
+    },
+
+    async viewRegisteredUsers(req, res) {
+        const users = await userModel.find();
+        res.render('./pages/view-registered-users', { users });
     }
 }
 
