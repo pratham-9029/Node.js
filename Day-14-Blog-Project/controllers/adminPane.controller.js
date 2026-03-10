@@ -10,7 +10,7 @@ const adminPanelController = {
     },
 
     async loginUser(req, res) {
-        const { email, password, confirmPassword } = req.body;
+        const { email, password } = req.body;
 
         const user = await userModel.findOne({ email });
         if (user) {
@@ -52,6 +52,8 @@ const adminPanelController = {
         const users = await userModel.find();
         res.render('./pages/view-registered-users', { users });
     }
+
+    
 }
 
 export default adminPanelController;

@@ -20,4 +20,7 @@ adminRouter.get('/logout', adminPanelController.logoutUser);
 
 adminRouter.get('/view-registered-users', auth, adminPanelController.viewRegisteredUsers);
 
+adminRouter.get('/add-blog', auth, adminPanelController.addBlogPage);
+adminRouter.post('/add-blog', auth, adminPanelController.addBlog);
+
 export default adminRouter;
