@@ -7,6 +7,8 @@ passport.use('local', new LocalStrategy(async (username, password, done) => {
     try {
         let user = await userModel.findOne({username});
 
+        console.log(user);
+
         if (!user) return done(null, false);
 
         let isMatch = await bcrypt.compare(password, user.password);
