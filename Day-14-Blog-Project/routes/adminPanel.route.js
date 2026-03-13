@@ -26,5 +26,14 @@ adminRouter.post('/add-blog', auth, imageUploads, adminPanelController.addBlog);
 
 adminRouter.get('/my-blogs', auth, adminPanelController.myBlogsPage);
 
+adminRouter.get('/all-blogs', auth, adminPanelController.allBlogsPage);
+
+adminRouter.get('/edit-blog/:id', auth, adminPanelController.editBlogPage);
+adminRouter.post('/edit-blog/:id', auth, imageUploads, adminPanelController.editBlog);
+
+adminRouter.get('/delete-blog/:id', auth, adminPanelController.deleteBlog);
+
+
+
 
 export default adminRouter;
