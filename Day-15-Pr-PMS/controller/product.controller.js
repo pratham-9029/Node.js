@@ -1,12 +1,12 @@
 import productModel from "../models/productModel.js"
+import fs from "fs";
 
 export const creatProduct = async (req, res) => {
     try {
-        // req.body.image = req.file.path;
+        req.body.image = req.file.path;
         const product = await productModel.create(req.body);
         return res.json(product);
     } catch (error) {
-        console.log(error.message);
         return res.json({ error: error.message });
     }
 }
@@ -16,7 +16,6 @@ export const getAllProduct = async (req,res)=>{
         const products = await productModel.find({});
         return res.json(products);
     } catch (error) {
-        console.log(error.message);
         return res.json({ error: error.message });
     }
 }
@@ -27,7 +26,23 @@ export const deleteProduct = async (req,res)=>{
         const dltProduct = await productModel.findByIdAndDelete(id);
         return res.json(dltProduct);
     } catch (error) {
-        console.log(error.message);
         return res.json({ error: error.message });
+    }
+}
+
+export const updateProduct = async (req,res) =>{
+    try {
+        const {id} = req.params;
+
+        if(req.file){
+            req.body.image = req.file.path;
+        }
+
+        const update = await productModel.findByIdAndUpdate(id,req.body);
+        fs.unlinkSync(update.image);
+
+        return res.json({message : "success"});
+    } catch (error) {
+        return res.json({error : error.message})
     }
 }
