@@ -27,6 +27,7 @@ export const getUser = async(req,res) =>{
     try {
         const {id} = req.params;
         const user = await userModel.findById(id);
+        return res.json(user);
     } catch (error) {
         console.log(error.message);
         return res.json({error:error.message})
