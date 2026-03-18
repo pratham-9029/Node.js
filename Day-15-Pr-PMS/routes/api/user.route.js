@@ -10,9 +10,9 @@ userRouter.post('/',createUser)
 userRouter.get('/', getAllUser);
 
 //get seprate user
-userRouter.get('/:id', getUser)
+userRouter.get('/:id', getUser);
 
 //delet user
-userRouter.delete('/:id',deleteUser)
+userRouter.delete('/:id',deleteUser);
 
 export default userRouter;
