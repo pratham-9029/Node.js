@@ -1,7 +1,7 @@
-import userModel from "../models/userModel.js";
+import userModel from "../../models/userModel.js";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
-import { envConfig } from "../config/dotenv.js";
+import { envConfig } from "../../config/dotenv.js";
 
 export const createUser = async (req, res) => {
     try {

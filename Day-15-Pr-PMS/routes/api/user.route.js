@@ -1,10 +1,10 @@
-import {Router} from "express";
-import { createUser, deleteUser, getAllUser, getUser, verifyEmail, verifyOTP } from "../../controller/user.controller.js";
+import { Router } from "express";
+import { createUser, deleteUser, getAllUser, getUser, verifyEmail, verifyOTP } from "../../controller/apiController/user.controller.js";
 
 const userRouter = Router();
 
 //user created
-userRouter.post('/',createUser)
+userRouter.post('/', createUser)
 
 //get all user
 userRouter.get('/', getAllUser);
@@ -13,7 +13,7 @@ userRouter.get('/', getAllUser);
 userRouter.get('/:id', getUser);
 
 //delet user
-userRouter.delete('/:id',deleteUser);
+userRouter.delete('/:id', deleteUser);
 
 //verify Email
 userRouter.post('/verifyEmail', verifyEmail);

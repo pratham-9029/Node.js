@@ -1,4 +1,4 @@
-import productModel from "../models/productModel.js"
+import productModel from "../../models/productModel.js"
 import fs from "fs";
 
 export const creatProduct = async (req, res) => {
@@ -11,7 +11,7 @@ export const creatProduct = async (req, res) => {
     }
 }
 
-export const getAllProduct = async (req,res)=>{
+export const getAllProduct = async (req, res) => {
     try {
         const products = await productModel.find({});
         return res.json(products);
@@ -20,9 +20,9 @@ export const getAllProduct = async (req,res)=>{
     }
 }
 
-export const deleteProduct = async (req,res)=>{
+export const deleteProduct = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const dltProduct = await productModel.findByIdAndDelete(id);
         return res.json(dltProduct);
     } catch (error) {
@@ -30,19 +30,19 @@ export const deleteProduct = async (req,res)=>{
     }
 }
 
-export const updateProduct = async (req,res) =>{
+export const updateProduct = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
-        if(req.file){
+        if (req.file) {
             req.body.image = req.file.path;
         }
 
-        const update = await productModel.findByIdAndUpdate(id,req.body);
+        const update = await productModel.findByIdAndUpdate(id, req.body);
         fs.unlinkSync(update.image);
 
-        return res.json({message : "success"});
+        return res.json({ message: "success" });
     } catch (error) {
-        return res.json({error : error.message})
+        return res.json({ error: error.message })
     }
 }
