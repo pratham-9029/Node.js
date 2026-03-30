@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import imageUploads from "../../middleware/imageUploads.js";
-import { createExtraCategory, deleteExtraCategory, getAllExtraCategory, updateExtraCategory } from "../../controller/extraCategory.controller.js";
+import { createExtraCategory, getAllExtraCategory, updateExtraCategory } from "../../controller/apiController/extraCategory.controller.js";
 
 
 const catExtraRouter = Router();
@@ -13,7 +13,7 @@ catExtraRouter.post('/', imageUploads , createExtraCategory)
 catExtraRouter.get('/', getAllExtraCategory);
 
 //delete product 
-catExtraRouter.delete('/:id', deleteExtraCategory);
+// catExtraRouter.delete('/:id', deleteExtraCategory);
 
 // update product
 catExtraRouter.patch('/:id',imageUploads, updateExtraCategory)

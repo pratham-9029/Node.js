@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import imageUploads from "../../middleware/imageUploads.js";
-import { createSubCategory, deleteSubCategory, getAllSubCategory, updateSubCategory } from "../../controller/subCategory.controller.js";
+import { createSubCategory, getAllSubCategory, updateSubCategory } from "../../controller/apiController/subCategory.controller.js";
 
 
 const catSubRouter = Router();
@@ -13,7 +13,7 @@ catSubRouter.post('/', imageUploads , createSubCategory)
 catSubRouter.get('/', getAllSubCategory);
 
 //delete product 
-catSubRouter.delete('/:id', deleteSubCategory);
+// catSubRouter.delete('/:id', deleteSubCategory);
 
 // update product
 catSubRouter.patch('/:id',imageUploads, updateSubCategory)

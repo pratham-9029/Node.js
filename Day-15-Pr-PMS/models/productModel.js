@@ -9,11 +9,11 @@ const productScema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'categoryTbl'
     },
-    subcategory : {
+    subCategory : {
         type:mongoose.Schema.Types.ObjectId,
         ref:'subCategoryTbl'
     },
-    extracategory : {
+    extraCategory : {
         type:mongoose.Schema.Types.ObjectId,
         ref:'extraCategoryTbl'
     }

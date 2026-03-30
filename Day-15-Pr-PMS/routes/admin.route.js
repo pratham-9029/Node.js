@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { addProductPage, dashboard, addCategoryPage, addSubCategoryPage, addExtraCategoryPage, addCategory, addSubCategory, addExtraCategory, viewCategoryPage, viewSubCategoryPage, viewExtraCategoryPage } from "../controller/admin.controller.js";
+import { addProductPage, dashboard, addCategoryPage, addSubCategoryPage, addExtraCategoryPage, addCategory, addSubCategory, addExtraCategory, viewCategoryPage, viewSubCategoryPage, viewExtraCategoryPage, addProduct, viewProductPage } from "../controller/admin.controller.js";
 import imageUploads from "../middleware/imageUploads.js";
 
 const adminRouter = Router()
 
 adminRouter.get('/', dashboard)
 adminRouter.get('/add-product', addProductPage)
+adminRouter.post('/add-product', imageUploads, addProduct)
+
+adminRouter.get('/view-products', viewProductPage)
 
 adminRouter.get('/add-category', addCategoryPage)
 adminRouter.post('/add-category', imageUploads, addCategory)
