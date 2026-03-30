@@ -11,7 +11,7 @@ productRouter.post('/', imageUploads , creatProduct)
 productRouter.get('/', getAllProduct);
 
 //delete product 
-productRouter.delete('/:id', deleteProduct);
+// productRouter.delete('/:id', deleteProduct);
 
 // update product
 productRouter.patch('/:id',imageUploads, updateProduct)

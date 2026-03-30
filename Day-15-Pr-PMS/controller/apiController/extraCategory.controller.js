@@ -1,37 +1,37 @@
 
 import fs from "fs";
-import subCategoryModel from "../../models/subCategoryModel.js";
+import extraCategoryModel from "../../models/extraCategoryModel.js";
 
-export const createSubCategory = async (req, res) => {
+export const createExtraCategory = async (req, res) => {
     try {
         req.body.image = req.file.path;
-        const product = await subCategoryModel.create(req.body);
+        const product = await extraCategoryModel.create(req.body);
         return res.json(product);
     } catch (error) {
         return res.json({ error: error.message });
     }
 }
 
-export const getAllSubCategory = async (req, res) => {
+export const getAllExtraCategory = async (req, res) => {
     try {
-        const products = await subCategoryModel.find({});
+        const products = await extraCategoryModel.find({});
         return res.json(products);
     } catch (error) {
         return res.json({ error: error.message });
     }
 }
 
-// export const deleteSubCategory = async (req, res) => {
+// export const deleteExtraCategory = async (req, res) => {
 //     try {
 //         const { id } = req.params;
-//         const dltProduct = await subCategoryModel.findByIdAndDelete(id);
+//         const dltProduct = await extraCategoryModel.findByIdAndDelete(id);
 //         return res.json(dltProduct);
 //     } catch (error) {
 //         return res.json({ error: error.message });
 //     }
 // }
 
-export const updateSubCategory = async (req, res) => {
+export const updateExtraCategory = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -39,7 +39,7 @@ export const updateSubCategory = async (req, res) => {
             req.body.image = req.file.path;
         }
 
-        const update = await subCategoryModel.findByIdAndUpdate(id, req.body);
+        const update = await extraCategoryModel.findByIdAndUpdate(id, req.body);
         fs.unlinkSync(update.image);
 
         return res.json({ message: "success" });

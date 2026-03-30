@@ -13,7 +13,7 @@ export const creatProduct = async (req, res) => {
 
 export const getAllProduct = async (req, res) => {
     try {
-        const products = await productModel.find({});
+        const products = await productModel.find({}).populate("category").populate("subCategory").populate("extraCategory");
         return res.json(products);
     } catch (error) {
         return res.json({ error: error.message });

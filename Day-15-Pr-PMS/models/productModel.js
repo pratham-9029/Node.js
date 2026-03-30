@@ -12,6 +12,10 @@ const productScema = new mongoose.Schema({
     subcategory : {
         type:mongoose.Schema.Types.ObjectId,
         ref:'subCategoryTbl'
+    },
+    extracategory : {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'extraCategoryTbl'
     }
 },{
     timestamps:true

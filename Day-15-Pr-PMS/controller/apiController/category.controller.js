@@ -4,7 +4,9 @@ import categoryModel from "../../models/categoryModel.js";
 
 export const createCategory = async (req, res) => {
     try {
-        req.body.image = req.file.path;
+        if (req.file) {
+            req.body.image = req.file.path;
+        }
         const product = await categoryModel.create(req.body);
         return res.json(product);
     } catch (error) {
@@ -21,15 +23,15 @@ export const getAllCategory = async (req, res) => {
     }
 }
 
-export const deleteCategory = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const dltProduct = await categoryModel.findByIdAndDelete(id);
-        return res.json(dltProduct);
-    } catch (error) {
-        return res.json({ error: error.message });
-    }
-}
+// export const deleteCategory = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const dltProduct = await categoryModel.findByIdAndDelete(id);
+//         return res.json(dltProduct);
+//     } catch (error) {
+//         return res.json({ error: error.message });
+//     }
+// }
 
 export const updateCategory = async (req, res) => {
     try {
